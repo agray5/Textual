@@ -1,4 +1,3 @@
-import './css/App.css';
 import { mapObject } from './utils/object';
 
 function Textual <T extends  Record<string, any>> (mods: T) {

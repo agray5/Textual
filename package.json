@@ -1,174 +1,121 @@
 {
   "name": "textual",
   "version": "0.0.1",
-  "description": "Engine for graphic enhanced text games",
-  "main": "build/index.js",
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "demo": "node scripts/demo.js",
-    "test": "node scripts/test.js",
-    "coverage": "node scripts/test.js --coverage --watchAll=false",
-    "postinstall": "node bin/postinstall",
-    "prepare": "npm run build",
-    "trypublish": "npm publish || true"
-  },
+  "description": "",
+  "keywords": [],
+  "main": "dist/textual.umd.js",
+  "module": "dist/textual.es5.js",
+  "typings": "dist/types/textual.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "agray5 <grayaprild@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agray5/textual"
+    "url": ""
   },
-  "author": "April Gray <aprgray5@gmail.com> (https://github.com/agray5)",
-  "bugs": {
-    "url": "https://github.com/agray5/textual/issues"
-  },
-  "homepage": "https://github.com/agray5/textual",
-  "keywords": [
-    "library"
-  ],
   "license": "MIT",
-  "devDependencies": {
-    "@babel/core": "7.9.6",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/preset-react": "^7.9.4",
-    "@svgr/webpack": "5.4.0",
-    "@typescript-eslint/eslint-plugin": "3.0.0",
-    "@typescript-eslint/parser": "3.0.0",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "26.0.1",
-    "babel-loader": "8.1.0",
-    "babel-plugin-named-asset-import": "^0.3.6",
-    "babel-preset-react-app": "^9.1.2",
-    "camelcase": "^6.0.0",
-    "case-sensitive-paths-webpack-plugin": "2.3.0",
-    "css-loader": "3.5.3",
-    "dotenv": "8.2.0",
-    "dotenv-expand": "5.1.0",
-    "eslint": "^7.0.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-loader": "4.0.2",
-    "eslint-plugin-flowtype": "5.1.0",
-    "eslint-plugin-import": "2.20.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.20.0",
-    "eslint-plugin-react-hooks": "^4.0.2",
-    "file-loader": "6.0.0",
-    "fs-extra": "9.0.0",
-    "html-webpack-plugin": "4.3.0",
-    "identity-obj-proxy": "3.0.0",
-    "is-wsl": "^2.2.0",
-    "jest": "26.0.1",
-    "jest-environment-jsdom-fourteen": "1.0.1",
-    "jest-resolve": "26.0.1",
-    "jest-watch-typeahead": "0.6.0",
-    "mini-css-extract-plugin": "0.9.0",
-    "optimize-css-assets-webpack-plugin": "5.0.3",
-    "pnp-webpack-plugin": "1.6.4",
-    "postcss-flexbugs-fixes": "4.2.1",
-    "postcss-loader": "3.0.0",
-    "postcss-normalize": "9.0.0",
-    "postcss-preset-env": "6.7.0",
-    "postcss-safe-parser": "4.0.2",
-    "react": "^16.13.1",
-    "react-app-polyfill": "^1.0.6",
-    "react-dev-utils": "10.1.0",
-    "react-dom": "^16.13.1",
-    "resolve": "1.17.0",
-    "resolve-url-loader": "3.1.1",
-    "sass-loader": "8.0.2",
-    "semver": "7.3.2",
-    "style-loader": "1.2.1",
-    "terser-webpack-plugin": "3.0.1",
-    "ts-pnp": "1.2.0",
-    "url-loader": "4.1.0",
-    "webpack": "4.43.0",
-    "webpack-dev-server": "3.11.0",
-    "webpack-manifest-plugin": "2.2.0",
-    "workbox-webpack-plugin": "5.1.3"
+  "engines": {
+    "node": ">=6.0.0"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "scripts": {
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "prebuild": "rimraf dist",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "start": "rollup -c rollup.config.ts -w",
+    "test": "jest --coverage",
+    "test:watch": "jest --coverage --watch",
+    "test:prod": "npm run lint && npm run test -- --no-cache",
+    "deploy-docs": "ts-node tools/gh-pages-publish",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "precommit": "lint-staged",
+    "travis-deploy-once": "travis-deploy-once"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "git add"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   },
   "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts",
-      "!src/lib/index.js",
-      "!src/demo/index.js",
-      "!src/utils/**",
-      "!src/**/*.d.ts",
-      "!**/tests/**"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jest-environment-jsdom-fourteen",
     "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      ".(ts|tsx)": "ts-jest"
     },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
       "ts",
-      "web.tsx",
       "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
+      "js"
     ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverageFrom": [
+      "src/*.{js,ts}"
     ]
   },
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react"
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-proposal-class-properties"
-      ]
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   },
-  "dependencies": {
-    "@babel/types": "^7.9.6",
-    "@types/jest": "^25.2.3",
-    "ts-loader": "^7.0.4",
-    "typescript": "^3.9.3"
+  "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@types/jest": "^23.3.2",
+    "@types/node": "^10.11.0",
+    "colors": "^1.3.2",
+    "commitizen": "^3.0.0",
+    "coveralls": "^3.0.2",
+    "cross-env": "^5.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "handlebars": "^4.5.0",
+    "husky": "^1.0.1",
+    "jest": "^23.6.0",
+    "jest-config": "^23.6.0",
+    "lint-staged": "^8.0.0",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^1.14.3",
+    "prompt": "^1.0.0",
+    "replace-in-file": "^3.4.2",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.67.0",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.18.0",
+    "semantic-release": "^15.9.16",
+    "shelljs": "^0.8.3",
+    "travis-deploy-once": "^5.0.9",
+    "ts-jest": "^23.10.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "typedoc": "^0.12.0",
+    "typescript": "^3.0.3"
   }
 }
