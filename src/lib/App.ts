@@ -1,14 +1,27 @@
 import './css/App.css';
+import { mapObject } from './utils/object';
 
-class Textual {
-  constructor (modules: Record<string, any> ) {
-    
-  }
-
-  update () {
+function Textual <T extends  Record<string, any>> (mods: T) {
+  
+  const update = () => {
 
   }
+  
+  let returns = {update}
+  const mappedMods: Return<T> = mapObject((val) => {
+    if(typeof val === "function")
+      return val(returns);
+    else 
+      return val; 
+  },  mods);
 
+  for (const key in mappedMods)
+  //@ts-ignore
+    returns[key] = mappedMods[key];
+
+
+  return Object.assign(returns, mappedMods);
 }
 
-export default App;
+
+export default Textual

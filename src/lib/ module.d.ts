@@ -1,15 +1,14 @@
 // Type definitions for Textual
 // Definitions by: April Gray aprgray5@gmail.com
 
-export = Textual;
 
 
-type Person <T extends {}> = T & {};
+type Dictionary<T> = Record<Key, T>
 
-//@ts-ignore
-declare class Textual<MODS extends Record<string, any>> implements Person<MODS> {
-  
-  constructor(modules?: MODS)
+type Key = string | number | symbol;
 
-}
-
+type Return<T> = {
+  [P in keyof T]?:
+      T[P] extends (...args: any) => any ? ReturnType<T[P]>:
+      T[P]
+};
