@@ -1,12 +1,10 @@
 import Textual from "../src/textual"
 
-/**
- * Dummy test
- */
 describe("Mods", () => {
 
   it("should be able to update values in other mods", () => {
     const newVal = "diff value";
+
     const textual = Textual({
       test1: () => {
         let value = "value";
@@ -19,6 +17,7 @@ describe("Mods", () => {
         update: () => text.test1.value = newVal
       })
     })
+    
 
     //@ts-ignore
     textual.test2.update()
