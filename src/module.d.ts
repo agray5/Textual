@@ -3,13 +3,21 @@
 
 interface TextualType {
   update(): void
+  Managers: ManagersType
 }
 
 interface ManagersType {
-  Entity: {
-
-  }
+  Entity?: Entity
 }
+
+interface Entity {
+  create: (text: ID) => any
+  isAlive: (id: number) => any
+  destroy: (id: number) => any
+}
+
+type ID = number | string 
+
 
 
 type ModsType<T, F> = Spread<F> & Spread<T> 
@@ -18,7 +26,7 @@ type ModsType<T, F> = Spread<F> & Spread<T>
 // GENERAL
 
 interface Newable<T> {
-	new(): T;
+	new (...args: any[]): T;
 }
 
 type Dictionary<T> = Record<Key, T>

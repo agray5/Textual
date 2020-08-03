@@ -1,13 +1,15 @@
-import Textual, {Mods} from "../textual";
+import Textual from "../textual";
 
-const entities:Record<number, boolean> = {}
+const entities:Record<ID, boolean> = {}
 let idCnt = 0;
 
 
-export default (text: any) => ({
-  create: () => {
-    entities[idCnt] = true;
+export default ({
+  create: (text: ID) => {
+    entities[text] = true;
     idCnt++;
+
+    return text;
   },
 
   isAlive: (id: number) => {
